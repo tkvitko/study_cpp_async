@@ -9,26 +9,9 @@
 #include <vector>
 #include <thread>
 
-//template <class T>
-//// суммирование векторов
-//void summ(std::vector<T>& first, std::vector<T>& second) {
-//    for (size_t i = 0; i < first.size(); ++i) {
-//        first[i] += second[i];
-//    }
-//}
-//
-//template <class T>
-//// получение кусочка вектора
-//std::vector<T> slice(std::vector<T> vec, int start, int end) {
-//    std::vector<T> slice;
-//    for (int i = start; i < end; ++i) {
-//        slice[i] = vec[i];
-//    }
-//    return slice;
-//}
 
 template <class T>
-// суммирование кусоков векторов
+// суммирование кусочков векторов
 void summ_slice(std::vector<T>& first, std::vector<T>& second, int start, int end) {
     for (size_t i = start; i < end; ++i) {
         first[i] += second[i];
