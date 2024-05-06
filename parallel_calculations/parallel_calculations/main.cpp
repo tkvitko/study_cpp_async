@@ -13,7 +13,7 @@
 template <class T>
 // суммирование кусочков векторов
 void summ_slice(std::vector<T>& first, std::vector<T>& second, int start, int end) {
-    for (size_t i = start; i < end; ++i) {
+    for (int i = start; i < end; ++i) {
         first[i] += second[i];
     }
 }
@@ -24,22 +24,26 @@ void parallel_sum(std::vector<T>& first, std::vector<T>& second, size_t threads)
     int start = 0;
     int end = batch_size;
     
+    // вариант с потоками:
     for (size_t i = 0; i < threads; ++i) {
-        std::thread t(summ_slice, std::ref(first), std::ref(second), start, end);
+        std::thread t(summ_slice<int>, std::ref(first), std::ref(second), start, end);
         t.detach();
         start += batch_size;
         end += batch_size;
     }
+    
+    // вариант без потоков:
+//    summ_slice<int>(std::ref(first), std::ref(second), start, end);
 }
 
 int main(int argc, const char * argv[]) {
     
     std::vector<int> a = {1, 2, 3};
-    std::vector<int> b = {1, 2, 3};
+    std::vector<int> b = {10, 20, 30};
 //    summ(a, b);
     
     std::cout << "Количество аппаратных ядер - " << std::thread::hardware_concurrency() << std::endl;
-    parallel_sum(a, b, 8);
+    parallel_sum(a, b, 1);
     for (auto el : a) {
         std::cout << el << std::endl;
     }
