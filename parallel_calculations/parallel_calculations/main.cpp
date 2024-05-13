@@ -5,6 +5,10 @@
 //  Created by tkvitko on 05.05.2024.
 //
 
+/*
+ Параллельное суммирование двух векторов.
+ */
+ 
 #include <iostream>
 #include <vector>
 #include <array>

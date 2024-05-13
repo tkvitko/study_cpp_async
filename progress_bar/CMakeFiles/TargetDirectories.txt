@@ -1,0 +1,3 @@
+/Users/tkvitko/c/netology/cpp_async/progress_bar/CMakeFiles/pb.dir
+/Users/tkvitko/c/netology/cpp_async/progress_bar/CMakeFiles/edit_cache.dir
+/Users/tkvitko/c/netology/cpp_async/progress_bar/CMakeFiles/rebuild_cache.dir
