@@ -19,16 +19,13 @@ public:
 };
 
 void swap_lock(Data& data_0, Data& data_1) {
-//    std::lock(data_0.mtx, data_1.mtx);
-    data_0.mtx.lock();
-    data_1.mtx.lock();
-    
+    std::lock(data_0.mtx, data_1.mtx);
+    std::lock_guard(data_0.mtx);
+    std::lock_guard(data_1.mtx);
+
     int tmp = data_0.value;
     data_0.value = data_1.value;
-    
     data_1.value = tmp;
-    data_0.mtx.unlock();
-    data_1.mtx.unlock();
 }
 
 void swap_scoped_lock(Data& data_0, Data& data_1) {
@@ -41,13 +38,11 @@ void swap_scoped_lock(Data& data_0, Data& data_1) {
 void swap_uniq_lock(Data& data_0, Data& data_1) {
     std::unique_lock uniq_lock_0(data_0.mtx);
     std::unique_lock uniq_lock_1(data_1.mtx);
+    std::lock(uniq_lock_0, uniq_lock_1);
     
     int tmp = data_0.value;
     data_0.value = data_1.value;
     data_1.value = tmp;
-    
-    uniq_lock_0.unlock();
-    uniq_lock_1.unlock();
 }
 
 int main(int argc, const char * argv[]) {

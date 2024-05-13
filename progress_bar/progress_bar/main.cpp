@@ -14,10 +14,11 @@
 #include <array>
 #include <thread>
 #include <random>
-#include <termios.h>
+#include <mutex>
 
+std::mutex gMutex;
 
-void make_and_draw() {
+void draw() {
     auto start = std::chrono::steady_clock::now();
     
     int len = 10;
@@ -26,13 +27,17 @@ void make_and_draw() {
         for (size_t i = 0; i < position; ++i) {
             std::cout << "\u2588";
         }
-        std::chrono::milliseconds timespan(100);
+        int sleep_milli_seconds = rand() % 1000;
+        std::chrono::milliseconds timespan(sleep_milli_seconds);
+//        std::chrono::milliseconds timespan(100);
         std::this_thread::sleep_for(timespan);
+        gMutex.lock();
         std::cout << "\r";
         position++;
         if (position != len) {
             std::cout.flush();
         }
+        gMutex.unlock();
     }
     
     std::chrono::duration<double> time_diff = std::chrono::steady_clock::now() - start;
@@ -46,7 +51,7 @@ int main(int argc, const char * argv[]) {
     int threads_count = 4;
     
     for (size_t i = 0; i < threads_count; ++i) {
-        std::thread t(make_and_draw);
+        std::thread t(draw);
         std::cout << "\n" << i << " " << t.get_id();
         t.join();
         threads.push_back(std::move(t));
