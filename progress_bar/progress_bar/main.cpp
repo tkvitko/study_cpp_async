@@ -22,7 +22,7 @@ std::mutex gMutex;
 void draw(int row_number) {
     auto start = std::chrono::steady_clock::now();
     
-    move(row_number, 100);
+//    move(row_number, 0);
     int len = 10;
     int position = 0;
     while (position < len) {
@@ -30,6 +30,7 @@ void draw(int row_number) {
             std::cout << "\u2588";
         }
         refresh();
+        move(row_number, 0);
         int sleep_milli_seconds = rand() % 1000;
         std::chrono::milliseconds timespan(sleep_milli_seconds);
         std::this_thread::sleep_for(timespan);
@@ -50,6 +51,8 @@ void draw(int row_number) {
 int main(int argc, const char * argv[]) {
     
     initscr();
+    int row, col;
+    getmaxyx(stdscr, row, col);
     std::vector<std::thread> threads;
     int threads_count = 4;
     
