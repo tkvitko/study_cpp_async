@@ -15,12 +15,14 @@
 #include <thread>
 #include <random>
 #include <mutex>
+#include <ncurses.h>
 
 std::mutex gMutex;
 
-void draw() {
+void draw(int row_number) {
     auto start = std::chrono::steady_clock::now();
     
+    move(row_number, 0);
     int len = 10;
     int position = 0;
     while (position < len) {
@@ -29,7 +31,6 @@ void draw() {
         }
         int sleep_milli_seconds = rand() % 1000;
         std::chrono::milliseconds timespan(sleep_milli_seconds);
-//        std::chrono::milliseconds timespan(100);
         std::this_thread::sleep_for(timespan);
         gMutex.lock();
         std::cout << "\r";
@@ -47,14 +48,17 @@ void draw() {
 
 int main(int argc, const char * argv[]) {
     
+    initscr();
     std::vector<std::thread> threads;
     int threads_count = 4;
     
     for (size_t i = 0; i < threads_count; ++i) {
-        std::thread t(draw);
+        std::thread t(draw, i);
         std::cout << "\n" << i << " " << t.get_id();
-        t.join();
         threads.push_back(std::move(t));
+    }
+    for (auto& el : threads) {
+        el.join();
     }
 
     return 0;
