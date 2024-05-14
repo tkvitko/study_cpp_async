@@ -22,7 +22,6 @@ std::mutex gMutex;
 void draw(int row_number) {
     auto start = std::chrono::steady_clock::now();
     
-//    move(row_number, 0);
     int len = 10;
     int position = 0;
     while (position < len) {
@@ -58,7 +57,6 @@ int main(int argc, const char * argv[]) {
     
     for (size_t i = 0; i < threads_count; ++i) {
         std::thread t(draw, i);
-//        std::cout << "\n" << i << " " << t.get_id();
         threads.push_back(std::move(t));
     }
     for (auto& el : threads) {
