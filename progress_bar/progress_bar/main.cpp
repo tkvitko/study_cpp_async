@@ -22,13 +22,14 @@ std::mutex gMutex;
 void draw(int row_number) {
     auto start = std::chrono::steady_clock::now();
     
-    move(row_number, 0);
+    move(row_number, 100);
     int len = 10;
     int position = 0;
     while (position < len) {
         for (size_t i = 0; i < position; ++i) {
             std::cout << "\u2588";
         }
+        refresh();
         int sleep_milli_seconds = rand() % 1000;
         std::chrono::milliseconds timespan(sleep_milli_seconds);
         std::this_thread::sleep_for(timespan);
@@ -60,6 +61,6 @@ int main(int argc, const char * argv[]) {
     for (auto& el : threads) {
         el.join();
     }
-
+    endwin();
     return 0;
 }
