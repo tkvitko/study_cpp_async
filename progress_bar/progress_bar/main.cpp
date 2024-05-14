@@ -44,7 +44,7 @@ void draw(int row_number) {
     }
     
     std::chrono::duration<double> time_diff = std::chrono::steady_clock::now() - start;
-    std::cout << "\t" << time_diff.count();
+    std::cout << "\t\t\t" << row_number << " " << time_diff.count();
 }
 
 
@@ -58,7 +58,7 @@ int main(int argc, const char * argv[]) {
     
     for (size_t i = 0; i < threads_count; ++i) {
         std::thread t(draw, i);
-        std::cout << "\n" << i << " " << t.get_id();
+//        std::cout << "\n" << i << " " << t.get_id();
         threads.push_back(std::move(t));
     }
     for (auto& el : threads) {
