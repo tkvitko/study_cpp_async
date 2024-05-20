@@ -31,9 +31,9 @@ void for_each(typename std::vector<T>::iterator begin,
     } else {
         long half_size = (end - begin) / 2;
         
-        for_each(begin, begin + half_size, test_func);
-        std::future<void> right(std::async(for_each<T>, begin + half_size, end, test_func));
-        right.wait();
+        std::future<void> left(std::async(for_each<T>, begin, begin + half_size, test_func));
+        left.wait();
+        for_each(begin + half_size, end, test_func);
     }
 }
 
