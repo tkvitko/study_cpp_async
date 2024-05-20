@@ -30,27 +30,16 @@ void for_each(typename std::vector<T>::iterator begin,
         int size = end - begin;
         int half_size = size / 2;
 
-        std::vector<int> left_part(0);
-        std::vector<int> right_part(0);
-        for (size_t i = 0; i < size; ++i) {
-            if (i < half_size) {
-                left_part.push_back(*begin);
-            } else {
-                right_part.push_back(*begin);
-            }
-            begin++;
-        }
-        
-        for_each(left_part.begin(), left_part.end(), test_func);
-        for_each(right_part.begin(), right_part.end(), test_func);
+        for_each(begin, begin + half_size, test_func);
+        for_each(begin + half_size, end, test_func);
     }
 }
-
 
 
 int main(int argc, const char * argv[]) {
     
     std::vector<int> test_vec = {1, 2, 3, 4};
+//    std::vector<int> test_vec = {4};
     for_each(test_vec.begin(), test_vec.end(), test_func);
     for (auto& el : test_vec) {
         std::cout << el << std::endl;
