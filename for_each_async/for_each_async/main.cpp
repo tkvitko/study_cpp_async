@@ -23,13 +23,13 @@ void for_each(typename std::vector<T>::iterator begin,
 //        *el = func(*el);
 //    }
     
-    if (end - begin == 1) {
+    if (end == begin) {
+        return;
+    } else if (end - begin == 1) {
         *begin = func(*begin);
     } else {
-        
         int size = end - begin;
         int half_size = size / 2;
-
         for_each(begin, begin + half_size, test_func);
         for_each(begin + half_size, end, test_func);
     }
@@ -38,8 +38,8 @@ void for_each(typename std::vector<T>::iterator begin,
 
 int main(int argc, const char * argv[]) {
     
-    std::vector<int> test_vec = {1, 2, 3, 4};
-//    std::vector<int> test_vec = {4};
+//    std::vector<int> test_vec = {1, 2, 3, 4};
+    std::vector<int> test_vec = {};
     for_each(test_vec.begin(), test_vec.end(), test_func);
     for (auto& el : test_vec) {
         std::cout << el << std::endl;
