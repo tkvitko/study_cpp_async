@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <vector>
+#include <future>
 
 
 int test_func(int x) {
@@ -30,16 +31,19 @@ void for_each(typename std::vector<T>::iterator begin,
     } else {
         int size = end - begin;
         int half_size = size / 2;
-        for_each(begin, begin + half_size, test_func);
-        for_each(begin + half_size, end, test_func);
+        
+        std::future<void> left(std::async(for_each, begin, begin + half_size, test_func));
+        left.wait();
+        std::future<void> right(std::async(for_each, begin + half_size, end, test_func));
+        right.wait();
     }
 }
 
 
 int main(int argc, const char * argv[]) {
     
-//    std::vector<int> test_vec = {1, 2, 3, 4};
-    std::vector<int> test_vec = {};
+    std::vector<int> test_vec = {1, 2, 3, 4};
+//    std::vector<int> test_vec = {};
     for_each(test_vec.begin(), test_vec.end(), test_func);
     for (auto& el : test_vec) {
         std::cout << el << std::endl;
