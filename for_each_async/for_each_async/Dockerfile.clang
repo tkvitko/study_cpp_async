@@ -1,0 +1,8 @@
+FROM ubuntu:latest
+LABEL tkvitko=""
+RUN apt-get update
+RUN apt-get install -y clang
+WORKDIR /root/demo/
+COPY main.cpp .
+RUN clang++ -pthread main.cpp -o demo_clang
+CMD ["./demo_clang"]
