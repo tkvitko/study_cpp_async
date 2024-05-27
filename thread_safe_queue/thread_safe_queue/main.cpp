@@ -14,7 +14,7 @@
 
 template <class T>
 class SafeQueue {
-    // очеред задач
+    // очередь задач
 public:
     
     void push(T func) {
