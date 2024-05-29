@@ -25,6 +25,7 @@ public:
     
     T pop() {
         // вынуть задачу из очереди
+        std::lock_guard lock_guard(mutex_);
         auto task = queue_.front();
         queue_.pop();
         return task;
@@ -50,12 +51,8 @@ public:
         const int cores_count = std::thread::hardware_concurrency();    // количество аппаратных ядер
         for (size_t i = 0; i != cores_count; ++i) {
             // наполнение вектора, хранящего потоки, задачами на обработку
-            
-            // не получается передать потоку задачу на выполнение
-            // попробовал 2 варианта, справа он них указаны исключения комплитятора
-            std::thread t(this->work);  // no matching constructor
-            //std::thread t(work);    // reference to non-static member function must be called
-            threadsPool_.push_back(t);
+            std::thread t(&ThreadPoolExecutor::work, this);
+            threadsPool_.push_back(std::move(t));
         }
     }
     

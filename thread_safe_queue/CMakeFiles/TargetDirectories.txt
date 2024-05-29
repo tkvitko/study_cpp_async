@@ -1,0 +1,3 @@
+/Users/tkvitko/c/netology/cpp_async/thread_safe_queue/CMakeFiles/tsq.dir
+/Users/tkvitko/c/netology/cpp_async/thread_safe_queue/CMakeFiles/edit_cache.dir
+/Users/tkvitko/c/netology/cpp_async/thread_safe_queue/CMakeFiles/rebuild_cache.dir
