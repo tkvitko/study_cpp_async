@@ -21,14 +21,15 @@ public:
         // добавить новую задачу в очередь
         std::lock_guard lock_guard(mutex_);
         queue_.push(func);
+        data_cond.notify_all(); // уведомление, что очередь не пуста
     }
     
-    T pop() {
+    void pop(T& value) {
         // вынуть задачу из очереди
-        std::lock_guard lock_guard(mutex_);
-        auto task = queue_.front();
+        std::unique_lock<std::mutex> lk(mutex_);
+        data_cond.wait(lk, [this] {return !queue_.empty(); });  // ожидание, что очередь не пуста
+        value = std::move(queue_.front());
         queue_.pop();
-        return task;
     }
     
     bool isEmpty() {
@@ -40,6 +41,7 @@ public:
 private:
     std::queue<T> queue_;   // внутренняя очередь для хранения задач
     std::mutex mutex_;      // мьютекс для блокировки на момент добалвения новой задачи в очередь
+    std::condition_variable data_cond;  // переменная, используемая для ожидания непустой очереди и уведомления о непустоте
 };
 
 
@@ -73,7 +75,8 @@ public:
         while (true) {
             if (!tasksQueue_.isEmpty()) {
                 // если в очереди задач есть задачи, вынимаем одну и выполняем
-                auto task = tasksQueue_.pop();
+                std::function<void()> task;
+                tasksQueue_.pop(task);
                 task();
             } else {
                 // иначе передаем управление другому потоку
